@@ -12,8 +12,8 @@ TA: @[Huancheng Lin](https://hku-cg.github.io/author/huancheng-lin/)
 
 - Ensure you have the following installed properly
   - [Git](https://git-scm.com)
-  - [Cmake](https://cmake.org) (Better install using your package manager)
-  - [Visual Studio Community](https://visualstudio.microsoft.com) (Only needed for Windows users)
+  - [Cmake](https://cmake.org) (Better install it with your package manager)
+  - [Visual Studio Community](https://visualstudio.microsoft.com) (Only needed for Windows users, "Desktop development with c++" should also be installed.)
 - Get the latest version of this repo
 
 ```shell
