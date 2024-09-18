@@ -10,11 +10,33 @@ TA: @[Huancheng Lin](https://hku-cg.github.io/author/huancheng-lin/)
 
 ## Instruction
 
-* Get the latest version of this repo
+- Ensure you have the following installed properly
+  - [Git](https://git-scm.com)
+  - [Cmake](https://cmake.org) (Better install using your package manager)
+  - [Visual Studio Community](https://visualstudio.microsoft.com) (Only needed for Windows users)
+- Get the latest version of this repo
 
 ```shell
 git clone https://github.com/HKU-CG/COMP3271_Computer_Graphics.git
 ```
+
+#### Linux/Macos
+```shell
+$ cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ ./Main
+```
+#### Windows (PowerShell)
+```shell
+$ cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
+$ mkdir build
+$ cd build
+$ cmake ..
+```
+Then open the `.sln` file under `build` folder using visual studio, set Main as Startup Projects.
 
 - Don't hesitate to seek helps with issue workspace
 
