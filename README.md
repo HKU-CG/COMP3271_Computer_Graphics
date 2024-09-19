@@ -18,7 +18,7 @@ TA: @[Huancheng Lin](https://hku-cg.github.io/author/huancheng-lin/)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-- Install cmake, make, git, glfw
+- Install cmake, make, git, glfw(We need install glfw here because the code didn't provide static library for ARM for now)
 ```shell
 brew install cmake make glfw git
 ```
