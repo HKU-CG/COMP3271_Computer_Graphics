@@ -60,18 +60,33 @@ void DrawTriangles() {
     // glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
     // sample code to draw vertices of triangle
-    glColor3d(1.0, 1.0, 1.0);
-    glPointSize(4);
-    glBegin(GL_POINTS);
-    for (int i = 0; i < point_count; i++) {
-        glVertex2d(triangle_to_draw.vertices[i][0], triangle_to_draw.vertices[i][1]);
-    }
-    glEnd();
+    // glColor3d(1.0, 1.0, 1.0);
+    // glPointSize(4);
+    // glBegin(GL_POINTS);
+    // for (int i = 0; i < point_count; i++) {
+    //     glVertex2d(triangle_to_draw.vertices[i][0], triangle_to_draw.vertices[i][1]);
+    // }
+    // glEnd();
 
     // TODO: Add code to draw triangles here. Use triangles.size() to get number of triangles.
     // Use triangles[i] to get the ith triangle.
     // Remember to set current gl color from the color_array.
     // If the number of triangles exceeds the length of the color list, you can start iterating the color list from the beginning again.
+    glPointSize(4);
+    glBegin(GL_TRIANGLES);
+    for (int j = 0; j < triangles.size(); j++) {
+        glColor3d(color_array[triangles[j].color_index][0], color_array[triangles[j].color_index][1], color_array[triangles[j].color_index][2]);
+        for (int i = 0; i < 3; i++) {
+            glVertex2f(triangles[j].vertices[i][0], triangles[j].vertices[i][1]);
+        }
+    }
+    glEnd();
+    glBegin(GL_POINTS);
+    glColor3d(color_array[triangles.size() % 11][0], color_array[triangles.size() % 11][1], color_array[triangles.size() % 11][2]);
+    for (int i = 0; i < point_count; i++) {
+        glVertex2d(triangle_to_draw.vertices[i][0], triangle_to_draw.vertices[i][1]);
+    }
+    glEnd();
 }
 
 
@@ -84,4 +99,13 @@ void MouseInteraction(double m_x, double m_y) {
     // When 3 points are specified, we get a new triangle.
     // Store the points of the triangle into a new element of the list 'triangles'
     // Use push_back function from std::Vector to add new triangles to the list
+    triangle_to_draw.vertices[point_count][0] = m_x;
+    triangle_to_draw.vertices[point_count][1] = m_y;
+    point_count++;
+    if (point_count >= 3) {
+        triangle_to_draw.color_index = triangles.size() % 11;
+        triangles.push_back(triangle_to_draw);
+        point_count = 0;
+    }
+    DrawTriangles();
 }
