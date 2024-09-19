@@ -10,33 +10,60 @@ TA: @[Huancheng Lin](https://hku-cg.github.io/author/huancheng-lin/)
 
 ## Instruction
 
-- Ensure you have the following installed properly
-  - [Git](https://git-scm.com)
-  - [Cmake](https://cmake.org) (Better install it with your package manager)
-  - [Visual Studio Community](https://visualstudio.microsoft.com) (Only needed for Windows users, "Desktop development with c++" should also be installed.)
-- Get the latest version of this repo
+### Environment Setup
 
+#### Macos
+- Install Homebrew using the following commands
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+- Install cmake, make, git, glfw
+```shell
+brew install cmake make glfw git
+```
+#### Linux
+
+- Use your package manager to install cmake, build-essential(This is a meta package that contains the tools we need for compiling cxx projects)
+```shell
+sudo apt install cmake build-essential
+```
+
+#### Windows
+
+- Download and install [Visual Studio Community](https://visualstudio.microsoft.com), "Desktop development with c++" should also be installed.
+- Download and install [Git](https://git-scm.com) and [Cmake](https://cmake.org)
+- Alternatively git and cmake can be installed with winget
+```shell
+winget install Git.Git
+winget install cmake
+```
+
+### Compile and run the code
+
+- Get the latest version of this repo
 ```shell
 git clone https://github.com/HKU-CG/COMP3271_Computer_Graphics.git
 ```
-
+- Compile and run
 #### Linux/Macos
 ```shell
-$ cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
-$ ./Main
+cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
+mkdir build
+cd build
+cmake ..
+make
+./<project_name>
 ```
 #### Windows (PowerShell)
 ```shell
-$ cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
-$ mkdir build
-$ cd build
-$ cmake ..
+cd COMP3271_Computer_Graphics/<AssignmentFolder/PartX>
+mkdir build
+cd build
+cmake ..
 ```
-Then open the `.sln` file under `build` folder using visual studio, set Main as Startup Projects.
+Then open the `.sln` file under `build` folder using visual studio, set `<ProjectName>` as Startup Projects.
 
+Replace `<>` with the actual folder/name.
 - Don't hesitate to seek helps with issue workspace
 
