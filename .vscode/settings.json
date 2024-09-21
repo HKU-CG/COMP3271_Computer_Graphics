@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "vector": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/user/Documents/College/COMP3271/Assignments/COMP3271_Computer_Graphics/TestOpenGL"
 }
