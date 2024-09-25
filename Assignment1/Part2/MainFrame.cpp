@@ -11,53 +11,94 @@ namespace {
     unsigned int SCR_HEIGHT = 600;
 #else
     unsigned int SCR_WIDTH = 1000;
-unsigned int SCR_HEIGHT = 1000;
+    unsigned int SCR_HEIGHT = 1000;
 #endif
 
-    void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-        scale *= std::pow(1.1f, (float)yoffset);
+    void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+        scale *= std::pow(1.1f, (float) yoffset);
     }
 
-    void FrameBufferSizeCallback(GLFWwindow* window, int width, int height) {
+    void FrameBufferSizeCallback(GLFWwindow *window, int width, int height) {
         SCR_WIDTH = width;
         SCR_HEIGHT = height;
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);        // Set the viewport to cover the new window
-        aspect = (float)SCR_WIDTH / (float)SCR_HEIGHT;  // Set the aspect ratio of the clipping area to match the viewport
+        aspect = (float) SCR_WIDTH /
+                 (float) SCR_HEIGHT;  // Set the aspect ratio of the clipping area to match the viewport
     }
-
 }
 
 void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float curr_y) {
     if (modeling_state_ == OBJ_ROTATION) {
         // ---------------------------------- Object Rotation ---------------------------------------
-        // TODO: Add your code here.
+        // TODO 2: Add your code here.
         // Find the correct 4x4 transform matrix "transform_mat" to rotate the object about its center.
 
         glm::mat4x4 transform_mat(1.f);
 
-        // ...
+        // 1. find V on the screen
+        // V = (curr_x, curr_y) - (start_x, start_y)
+        // 2. rotate V to A by 90 degrees
+        // A = ?
+        // 3. find the rotation axis in the *world space*
+        // glm::vec3 rot_axis = ?
+        // 4. find the rotation angle k * ||A||, assign a proper value to k
+        // float rot_angle = ?
+        // 5. find the rotation matrix
+        // glm::mat4x4 rot_mat = glm::rotate(glm::mat4x4(1.f), rot_angle, rot_axis);
+        // 6. find the translation matrix
+        // glm::mat4x4 trans_mat = ?
+        // 7. find the final transformation matrix
+        // transform_mat = ?
+
 
         mesh_.ApplyTransform(transform_mat);
-    }
-    else if (modeling_state_ == OBJ_TRANSLATION) {
+    } else if (modeling_state_ == OBJ_TRANSLATION) {
         // ---------------------------------- Object Translation ------------------------------------
-        // TODO: Add your code here.
+        // TODO 1: Add your code here.
         // Find the correct 4x4 transform matrix "trans_mat" to translate the object along the view plane.
 
         glm::mat4x4 transform_mat(1.f);
 
+        // 1. find the ray from the screen to the world space
+        glm::vec3 o, v;
+        std::tie(o, v) = Screen2WorldRay(start_x, start_y);
+        // 2. find the intersection point with the object
+        int face_id;
+        glm::vec3 intersected_point;
+        std::tie(face_id, intersected_point) = mesh_.FaceIntersection(o, v);
+        if(face_id == -1) return;
+
+        // 3. find the z value of the intersection point in the camera space
+        float z_vals = World2Camera(intersected_point).z;
+
+        // 4. find the translation vector
+        glm::vec3 a = Screen2World(start_x, start_y, z_vals);
+        glm::vec3 b = Screen2World(curr_x, curr_y, z_vals);
+        // 5. find the translation matrix
+        // transform_mat = glm::translate(glm::mat4x4(1.f), ?);
 
         mesh_.ApplyTransform(transform_mat);
-    }
-    else if (modeling_state_ == OBJ_EXTRUDE) {
+    } else if (modeling_state_ == OBJ_EXTRUDE) {
         // ---------------------------------- Face Extrusion ------------------------------------
-        // TODO: Add your code here.
+        // TODO 3: Add your code here.
         // Find the correct 4x4 transform matrix "trans_mat" to translate the face vertices along the face normal.
 
         glm::mat4x4 transform_mat(1.f);
         int face_index = -1;
 
-        // ...
+        // 1. find the intersection point with the face
+        glm::vec3 o, v, v_cur;
+        std::tie(o, v) = Screen2WorldRay(start_x, start_y);
+        std::tie(o, v_cur) = Screen2WorldRay(curr_x, curr_y);
+        int face_id;
+        glm::vec3 intersected_point;
+        std::tie(face_id, intersected_point) = mesh_.FaceIntersection(o, v);
+        if(face_id == -1) return;
+        // 2. calculate the face normal vector in the world space using "mesh_.faces_" and "mesh_.vertices_"
+        // possible useful functions: glm::cross, glm::normalize
+        // glm::vec3 face_normal = ?
+        // 3. find the point on ray (intersected_point, face_normal) which is the closest to ray (o, v_cur)
+        // 4. find the translation matrix to move the face vertices along the face normal direction to the new point
 
         mesh_.ApplyFaceTransform(face_index, transform_mat);
     }
@@ -65,9 +106,18 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
 void MainFrame::VisualizeWorldSpace() {
     // ---------------------------------- World Space Visualization ------------------------------------
-    // TODO: Add your code here to visualize the world space.
-
-    // ...
+    glLineWidth(2.f);
+    glBegin(GL_LINES);
+    glColor3f(1.f, 0.f, 0.f);
+    glVertex3f(0.f, 0.f, 0.f);
+    glVertex3f(2.f, 0.f, 0.f);
+    glColor3f(0.f, 1.f, 0.f);
+    glVertex3f(0.f, 0.f, 0.f);
+    glVertex3f(0.f, 2.f, 0.f);
+    glColor3f(0.f, 0.f, 1.f);
+    glVertex3f(0.f, 0.f, 0.f);
+    glVertex3f(0.f, 0.f, 2.f);
+    glEnd();
 }
 
 
@@ -80,12 +130,12 @@ void MainFrame::MainLoop() {
     glfwWindowHint(GLFW_SAMPLES, 4);
 
     // glfw window creation, set viewport with width=1000 and height=1000
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "3DModeling", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "3DModeling", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
     glfwSetScrollCallback(window, ScrollCallback);
     // glad: load all OpenGL function pointers
-    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
     const float alpha = 0.3f;
     const float beta = 0.1f;
@@ -100,10 +150,6 @@ void MainFrame::MainLoop() {
     // render loop
     while (!glfwWindowShouldClose(window)) {
         ProcessInput(window);
-
-        // glEnable(GL_DEPTH_TEST);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
 
         // Apply camera projection;
         camera_.Perspective(90.f, aspect, .5f, 10.f);
@@ -125,7 +171,7 @@ void MainFrame::MainLoop() {
     glfwTerminate();
 }
 
-void MainFrame::ProcessInput(GLFWwindow* window) {
+void MainFrame::ProcessInput(GLFWwindow *window) {
     // Key events
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
         modeling_state_ = OBJ_ROTATION;
@@ -199,8 +245,7 @@ void MainFrame::LeftMouseClick(float x, float y) {
         glm::vec3 p_world = Screen2World(x, y);
         glm::vec3 cam_pos = camera_.view_mat_inv_ * glm::vec4(0.f, 0.f, 0.f, 1.f);
         mesh_.SubdivideFace(cam_pos, glm::normalize(p_world - cam_pos));
-    }
-    else if (modeling_state_ == OBJ_EXTRUDE) {
+    } else if (modeling_state_ == OBJ_EXTRUDE) {
         glm::vec3 p_world = Screen2World(x, y);
         glm::vec3 cam_pos = camera_.view_mat_inv_ * glm::vec4(0.f, 0.f, 0.f, 1.f);
         mesh_.GenExtrudeFace(cam_pos, glm::normalize(p_world - cam_pos));
@@ -229,16 +274,16 @@ void MainFrame::RightMouseRelease() {
     return;
 }
 
-glm::vec3 MainFrame::Camera2World(const glm::vec3& x, float w) {
+glm::vec3 MainFrame::Camera2World(const glm::vec3 &x, float w) {
     return glm::vec3(camera_.view_mat_inv_ * glm::vec4(x, w));
 }
 
-glm::vec3 MainFrame::World2Camera(const glm::vec3& x, float w) {
+glm::vec3 MainFrame::World2Camera(const glm::vec3 &x, float w) {
     return glm::vec3(camera_.view_mat_ * glm::vec4(x, w));
 }
 
-glm::vec3 MainFrame::Screen2World(const glm::vec2& v, float depth) {
-    float x = v.x / SCR_WIDTH  * 2.f - 1.f;
+glm::vec3 MainFrame::Screen2World(const glm::vec2 &v, float depth) {
+    float x = v.x / SCR_WIDTH * 2.f - 1.f;
     float y = v.y / SCR_HEIGHT * 2.f - 1.f;
     float focal = std::tan(camera_.fov_ * .5f / 180.f * glm::pi<float>());
     glm::vec4 v_camera(x * focal * aspect, y * focal, -1.f, 1.f);
