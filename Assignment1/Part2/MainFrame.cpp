@@ -46,7 +46,6 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
         glm::mat4x4 transform_mat(1.f);
 
-        // ...
 
         mesh_.ApplyTransform(transform_mat);
     }
