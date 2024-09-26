@@ -43,7 +43,7 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
         // 2. rotate V to A by 90 degrees
         // A = ?
-        glm::vec2 A = glm::vec2(-V.y, V.x); // ?
+        glm::vec2 A = glm::vec2(-V.y, V.x);
 
         // 3. find the rotation axis in the *world space*
         // glm::vec3 rot_axis = ?
@@ -51,7 +51,7 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
         // 4. find the rotation angle k * ||A||, assign a proper value to k
         // float rot_angle = ?
-        float rot_angle = 3.14f * glm::length(A); // ?
+        float rot_angle = 0.005f * glm::length(A);
 
         // 5. find the rotation matrix
         // glm::mat4x4 rot_mat = glm::rotate(glm::mat4x4(1.f), rot_angle, rot_axis);
@@ -59,12 +59,11 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
         // 6. find the translation matrix
         // glm::mat4x4 trans_mat = ?
-        glm::mat4x4 trans_mat = glm::translate(glm::mat4x4(1.f), rot_axis); // ?
+        glm::mat4x4 trans_mat = glm::translate(glm::mat4x4(1.f), mesh_.center_);
 
         // 7. find the final transformation matrix
         // transform_mat = ?
-        transform_mat = trans_mat; // ?
-
+        transform_mat = trans_mat * rot_mat * glm::inverse(trans_mat) * transform_mat;
 
         mesh_.ApplyTransform(transform_mat);
     } else if (modeling_state_ == OBJ_TRANSLATION) {
@@ -93,7 +92,7 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
 
         // 5. find the translation matrix
         // transform_mat = glm::translate(glm::mat4x4(1.f), ?);
-        transform_mat = glm::translate(glm::mat4x4(1.f), b - a); // ?
+        transform_mat = glm::translate(glm::mat4x4(1.f), b - a);
 
         mesh_.ApplyTransform(transform_mat);
     } else if (modeling_state_ == OBJ_EXTRUDE) {
@@ -116,14 +115,15 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
         // 2. calculate the face normal vector in the world space using "mesh_.faces_" and "mesh_.vertices_"
         // possible useful functions: glm::cross, glm::normalize
         // glm::vec3 face_normal = ?
-        glm::vec3 face_normal = intersected_point; // ?
+        glm::vec3 face_normal = glm::normalize(glm::cross(v_cur, v)); // ?
 
         // 3. find the point on ray (intersected_point, face_normal) which is the closest to ray (o, v_cur)
+        intersected_point = v_cur - v; // ?
         
         // 4. find the translation matrix to move the face vertices along the face normal direction to the new point
         transform_mat = glm::translate(glm::mat4x4(1.f), intersected_point); // ?
 
-        mesh_.ApplyFaceTransform(face_index, transform_mat);
+        mesh_.ApplyFaceTransform(face_id, transform_mat);
     }
 }
 
