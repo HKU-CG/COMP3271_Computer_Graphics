@@ -33,22 +33,35 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
         // TODO 2: Add your code here.
         // Find the correct 4x4 transform matrix "transform_mat" to rotate the object about its center.
 
-        glm::mat4x4 transform_mat(1.f);
-
         // 1. find V on the screen
         // V = (curr_x, curr_y) - (start_x, start_y)
+        glm::vec2 s_start(start_x, start_y);
+        glm::vec2 s_cur(curr_x, curr_y);
+        glm::vec2 V = s_cur - s_start;
+
         // 2. rotate V to A by 90 degrees
         // A = ?
+        glm::vec2 A = glm::vec2(-V.y, V.x); // ?
+
         // 3. find the rotation axis in the *world space*
         // glm::vec3 rot_axis = ?
+        glm::vec3 rot_axis = glm::normalize(Screen2World(A + s_start) - Screen2World(s_start));
+
         // 4. find the rotation angle k * ||A||, assign a proper value to k
         // float rot_angle = ?
+        float rot_angle = 0.0f; // ?
+
         // 5. find the rotation matrix
         // glm::mat4x4 rot_mat = glm::rotate(glm::mat4x4(1.f), rot_angle, rot_axis);
+        glm::mat4x4 rot_mat = glm::rotate(glm::mat4x4(1.f), rot_angle, rot_axis);
+
         // 6. find the translation matrix
         // glm::mat4x4 trans_mat = ?
+        glm::mat4x4 trans_mat = glm::translate(glm::mat4x4(1.f), rot_axis);
+
         // 7. find the final transformation matrix
         // transform_mat = ?
+        glm::mat4x4 transform_mat(trans_mat);
 
 
         mesh_.ApplyTransform(transform_mat);
