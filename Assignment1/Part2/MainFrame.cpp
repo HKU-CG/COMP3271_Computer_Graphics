@@ -115,13 +115,16 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
         // 2. calculate the face normal vector in the world space using "mesh_.faces_" and "mesh_.vertices_"
         // possible useful functions: glm::cross, glm::normalize
         // glm::vec3 face_normal = ?
-        glm::vec3 face_normal = glm::normalize(glm::cross(v_cur, v)); // ?
+        glm::vec3 face_normal = glm::normalize(glm::cross(mesh_.vertices_[mesh_.faces_[face_id][1]] - mesh_.vertices_[mesh_.faces_[face_id][0]],
+                                                            mesh_.vertices_[mesh_.faces_[face_id][2]] - mesh_.vertices_[mesh_.faces_[face_id][1]]));
 
         // 3. find the point on ray (intersected_point, face_normal) which is the closest to ray (o, v_cur)
-        intersected_point = v_cur - v; // ?
+        intersected_point = glm::dot(glm::normalize(cross(glm::normalize(cross(face_normal, v_cur)), v_cur)), (o, v)) /
+                            glm::dot(glm::normalize(cross(glm::normalize(cross(face_normal, v_cur)), v_cur)), face_normal)
+                            * face_normal;
         
         // 4. find the translation matrix to move the face vertices along the face normal direction to the new point
-        transform_mat = glm::translate(glm::mat4x4(1.f), intersected_point); // ?
+        transform_mat = glm::translate(glm::mat4x4(1.f), -intersected_point);
 
         mesh_.ApplyFaceTransform(face_id, transform_mat);
     }
