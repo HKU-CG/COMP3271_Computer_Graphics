@@ -90,10 +90,9 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
         glm::vec3 o, v, v_cur;
         std::tie(o, v) = Screen2WorldRay(start_x, start_y);
         std::tie(o, v_cur) = Screen2WorldRay(curr_x, curr_y);
-        int face_id;
         glm::vec3 intersected_point;
-        std::tie(face_id, intersected_point) = mesh_.FaceIntersection(o, v);
-        if(face_id == -1) return;
+        std::tie(face_index, intersected_point) = mesh_.FaceIntersection(o, v);
+        if(face_index == -1) return;
         // 2. calculate the face normal vector in the world space using "mesh_.faces_" and "mesh_.vertices_"
         // possible useful functions: glm::cross, glm::normalize
         // glm::vec3 face_normal = ?
