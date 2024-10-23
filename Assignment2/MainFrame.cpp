@@ -133,7 +133,7 @@ void MainFrame::MainLoop() {
                    glm::vec3(0.f, 0.f, 1.f));
     glEnable(GL_DEPTH_TEST);
 
-    unsigned int shaderProgram = createShaderProgram("../vertex_shader_solution.glsl", "../fragment_shader.glsl");
+    unsigned int shaderProgram = createShaderProgram("../vertex_shader.glsl", "../fragment_shader.glsl");
 
     unsigned int VBO, VAO, NBO, EBO, TBO;
     mesh_.setupBuffers(VAO, VBO, NBO, EBO, TBO);
