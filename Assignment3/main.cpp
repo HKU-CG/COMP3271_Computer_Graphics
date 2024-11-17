@@ -99,12 +99,11 @@ int main() {
     lodepng::save_file(png, work_dir + output_path);
 }
 
-Vec SampleHemisphere(const HitRecord &hit_record) {
+Vec SampleHemisphere(const Vec &normal) {
 
     auto ray = Vec(0.0f, 0.0f, 0.0f);
     // TODO 3: add your code here.
     // This function randomly samples a direction on the hemisphere.
-    // We will make use of hit_record.normal here
     // Hint: sample a random direction on the hemisphere with normal as the z-axis
     // Hint: Use Rodrigues' rotation formula to rotate the z-axis to the normal direction
 
@@ -147,7 +146,7 @@ Color Shade(const Hittable &hittable_collection,
     // 2. calculate diffuse
     if (material.k_d > 0.f && trace_depth < kMaxTraceDepth) {
         // TODO 4: implement the diffuse reflection part of the shader.
-        Vec wi = SampleHemisphere(hit_record);
+        Vec wi = SampleHemisphere(hit_record.normal);
         // color += diffuseReflectance * BRDF * cos_theta / pdf;
     }
     // 3. calculate specular

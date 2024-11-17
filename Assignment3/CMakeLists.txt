@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(Graphics_PA3)
+project(Assignment3)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Release)
