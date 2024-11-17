@@ -1,24 +1,25 @@
-# Programming Assignment 2
-## Due date: 23:59, Nov. 7, 2024 HKT
+# Programming Assignment 3
+## Due date: 23:59, Dec. 3, 2024 HKT
 
 ### Goal
-Shaders in OpenGL.
+Path Tracing Renderer.
 
 ### Objectives
-- You are required to implement a simple shader program in OpenGL.
+You are required to implement 
+  - the ray hit test function for the sphere and the triangle,
+  - the random hemisphere sampling function,
+  - the diffuse reflection function.
 
 ### Code Template
 - You will be offered a template, so you don’t need to do more work to configure the template.
-- The template has already implemented some initial work, such as initializing one window, configuring
-OpenGL and so on.
-- Only two .glsl files are provided in the template. You need to fill in the shaders in these two files.
+- By default, the template outputs an image of the rendered scene in the `outputs` folder.
 - Feel free to use your own environment and library. But you should schedule a meeting and demo your
   program to the TA.
 
 ### Usage
 #### Linux/Macos
 ```shell
-$ cd COMP3271_Computer_Graphics/Assignment2
+$ cd COMP3271_Computer_Graphics/Assignment3
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -27,24 +28,40 @@ $ ./Main
 ```
 #### Windows (PowerShell)
 ```shell
-$ cd COMP3271_Computer_Graphics/Assignment2
+$ cd COMP3271_Computer_Graphics/Assignment3
 $ mkdir build
 $ cd build
 $ cmake ..
 ```
 
-Then open Assignment2.sln under `build` folder, set Main as Startup Projects.
+Then open Assignment3.sln under `build` folder, set Main as Startup Projects.
 
 ### Task
-Your task is to implement the main function in `fragment_shader.glsl` and `vertex_shader.glsl`.
+Your task is to implement the following functions whose interfaces are given in `Hittable.cpp`.
+
+```cpp
+bool Sphere::Hit(const Ray &ray, HitRecord *hit_record)
+```
+
+```cpp
+bool Triangle::Hit(const Ray &ray, HitRecord *hit_record)
+```
+
+and the following functions whose interfaces are given in `main.cpp`.
+
+```cpp
+Color Shade(const Hittable &hittable_collection,
+            const HitRecord &hit_record,
+            int trace_depth)
+```
+```cpp
+Vec3 RandomHemisphere(const Vec &normal)
+```
 
 Refer to the tutorial slides for more details
 
 ### Requirements
 
-One window should be opened to show the required interactive techniques with related functions. See the
-demo video for reference.
-
 Necessary comments to explain your code is required.
 
-**Submit your work `fragment_shader.glsl` and `vertex_shader.glsl` (If other files are modified, please also submit them) on Moodle before the deadline.**
+**Submit your work `main.cpp` and `Hittable.cpp` (If other files are modified, please also submit them) on Moodle before the deadline.**
