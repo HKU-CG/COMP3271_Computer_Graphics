@@ -1,0 +1,147 @@
+[camera]
+
+extrinsic = [
+    [1.0, 0.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0, 0.0],
+    [0.0, 0.0, 1.0, 0.0],
+    [0.0, 0.0, 0.0, 1.0]
+]
+
+fov = 90.0
+width = 800
+height = 800
+super_sampling = 0
+
+[[hittable]]
+type = "sphere"
+position = [0.1, 0.4, -1.5]
+radius = 0.3
+ambient = [1.0, 1.0, 1.0]
+diffuse = [0.8, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [0.3, 0.0, -0.8]
+radius = 0.1
+ambient = [0.8, 0.8, 0.5]
+diffuse = [0.8, 0.8, 0.5]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [-0.3, 0.2, -0.8]
+radius = 0.1
+ambient = [0.8, 0.6, 0.8]
+diffuse = [0.8, 0.6, 0.8]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [0.0, -0.3, -1.0]
+radius = 0.2
+ambient = [0.7, 0.6, 0.9]
+diffuse = [0.7, 0.6, 0.9]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [-0.4, -0.45, -0.9]
+radius = 0.1
+ambient = [0.9, 0.9, 0.6]
+diffuse = [0.9, 0.9, 0.6]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [-0.3, -0.4, -1.5]
+radius = 0.2
+ambient = [0.6, 0.9, 0.9]
+diffuse = [0.6, 0.9, 0.9]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "sphere"
+position = [0.4, -0.5, -1.5]
+radius = 0.2
+ambient = [0.9, 0.9, 0.9]
+diffuse = [0.9, 0.9, 0.9]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.6
+k_s = 0.3
+sh = 3.0
+
+[[hittable]]
+type = "triangle"
+a = [-1000.0, 1000.0, -2.3]
+b = [0.0, -1000.0, -2.3]
+c = [1000.0, 1000.0, -2.3]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.8
+k_s = 0.1
+sh = 3.0
+
+[[hittable]]
+type = "triangle"
+a = [-1.0, 3.0, 1.0]
+b = [1.0, 3.0, -3.0]
+c = [1.0, 3.0, -1.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.0
+k_d = 0.1
+k_s = 0.0
+sh = 1.0
+emission = 4.0
+
+[[hittable]]
+type = "triangle"
+a = [-1.0, 3.0, 1.0]
+b = [-1.0, 3.0, -3.0]
+c = [1.0, 3.0, -3.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.0
+k_d = 0.1
+k_s = 0.0
+sh = 1.0
+emission = 4.0

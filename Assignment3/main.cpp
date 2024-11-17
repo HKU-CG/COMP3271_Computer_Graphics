@@ -22,42 +22,37 @@ Color Shade(const Hittable &hittable_collection,
             const HitRecord &hit_record,
             int trace_depth);
 
-void single_thread(int thread_i, int n_thread, float *image_buffer, int width, int height, int total_spp) {
+void tracePixel(int x, int y, int width, int height, int thread_spp, const Camera &camera, const Scene &scene,
+                float *image_buffer) {
+    Color color(0.f, 0.f, 0.f);
+    for (int i = 0; i < thread_spp; ++i) {
+        float bias_x = get_random_float();
+        float bias_y = get_random_float();
+        Ray ray = camera.RayAt(float(x) + bias_x, float(y) + bias_y);
+        color += TraceRay(ray, scene.hittable_collection_, 1);
+    }
+    color /= float(thread_spp);
+    int idx = 3 * ((height - y - 1) * width + x);
+    image_buffer[idx] += color.r;
+    image_buffer[idx + 1] += color.g;
+    image_buffer[idx + 2] += color.b;
+}
+
+void thread_func(int thread_i, int n_thread, int spp, int width, int height, const Camera &camera, const Scene &scene,
+                 float *image_buffer) {
     auto now = std::chrono::high_resolution_clock::now();
-    auto now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
-    auto epoch_ns = now_ns.time_since_epoch();
-    auto seed = std::chrono::duration_cast<std::chrono::nanoseconds>(epoch_ns).count();
-    std::mt19937 rng(seed + thread_i);
-
-    const std::string work_dir(CMAKE_SOURCE_DIR);
-    Scene scene(work_dir, scene_file);
-    const Camera &camera = scene.camera_;
-    int spp = total_spp / n_thread;
+    int thread_spp = spp / n_thread;
     float progress = 0.f;
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            Color color(0.f, 0.f, 0.f);
-            for (int i = 0; i < spp; i++) {
-                float bias_x = get_random_float();
-                float bias_y = get_random_float();
-                Ray ray = camera.RayAt(float(x) + bias_x, float(y) + bias_y);
-                color += TraceRay(ray, scene.hittable_collection_, 1);
-            }
-            color /= float(total_spp);
-            int idx = 3 * ((height - y - 1) * width + x);
-            image_buffer[idx] += color.r;
-            image_buffer[idx + 1] += color.g;
-            image_buffer[idx + 2] += color.b;
 
-
-            float curr_progress = float(x * height + y) / float(height * width);
-            if (curr_progress > progress + 0.05f) {
-                progress += 0.05f;
-                std::cout << "Progress (thread " << thread_i + 1 << "/" << n_thread << "): " << progress << std::endl;
-            }
+    for (int x = thread_i; x < width; x += n_thread) {
+        for (int y = 0; y < height; ++y) {
+            tracePixel(x, y, width, height, thread_spp, camera, scene, image_buffer);
         }
     }
 
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - now;
+    std::cout << "Thread " << thread_i + 1 << " finished in " << elapsed.count() << " seconds." << std::endl;
 }
 
 int main() {
@@ -70,25 +65,21 @@ int main() {
     int height = camera.height_;
 
     std::vector<unsigned char> image(width * height * 4, 0);
-    float *image_buffer = new float[width * height * 3];
-    for (int i = 0; i < width * height * 3; ++i) {
-        image_buffer[i] = 0.f;
-    }
-
+    float *image_buffer = new float[width * height * 3]();
 
     std::vector<std::thread> thread_pool;
     for (int thread_i = 0; thread_i < NUM_THREAD; ++thread_i) {
-        std::thread t(single_thread, thread_i, NUM_THREAD, image_buffer, width, height, spp);
-        thread_pool.push_back(std::move(t));
+        thread_pool.emplace_back(thread_func, thread_i, NUM_THREAD, spp, width, height, std::ref(camera),
+                                 std::ref(scene), image_buffer);
     }
     for (std::thread &t: thread_pool) {
         t.join();
     }
 
-    // copy from image_buffer to image
+    // Copy from image_buffer to image
     for (int i = 0; i < width * height; ++i) {
         for (int j = 0; j < 3; ++j) {
-            image[4 * i + j] = (uint8_t)(glm::min(image_buffer[3 * i + j], 1.f - 1e-5f) * 256.f);
+            image[4 * i + j] = static_cast<uint8_t>(glm::min(image_buffer[3 * i + j], 1.f - 1e-5f) * 256.f);
         }
         image[4 * i + 3] = 255;
     }
@@ -106,7 +97,6 @@ Vec SampleHemisphere(const Vec &normal) {
     // This function randomly samples a direction on the hemisphere.
     // Hint: sample a random direction on the hemisphere with normal as the z-axis
     // Hint: Use Rodrigues' rotation formula to rotate the z-axis to the normal direction
-
     return ray;
 }
 
@@ -140,10 +130,10 @@ Color Shade(const Hittable &hittable_collection,
 
     const Material &material = hit_record.material;
     Point o = hit_record.position;
+    color = material.ambient * material.k_a;
 
     // 1. If the object has emission, add its contribution to the color.
     color += material.emission;
-    // 2. calculate diffuse
     if (material.k_d > 0.f && trace_depth < kMaxTraceDepth) {
         // TODO 4: implement the diffuse reflection part of the shader.
         Vec wi = SampleHemisphere(hit_record.normal);
@@ -158,7 +148,7 @@ Color Shade(const Hittable &hittable_collection,
         float cosAlpha = glm::dot(newDir, reflection);
         if (cosAlpha < 0) cosAlpha = 0;
         // BRDF and PDF for Phong reflection
-        Vec brdf = material.specular * ((material.sh + 2) / (2 * M_PI)) * pow(cosAlpha, material.sh);
+        Vec brdf = material.specular * ((material.sh + 2) / (2 * M_PI)) * (float) pow(cosAlpha, material.sh);
         float pdf = ((material.sh + 1) / (2 * M_PI)) * pow(cosAlpha, material.sh);
         Vec reflectColor = TraceRay(Ray(hit_record.position, newDir), hittable_collection, trace_depth + 1);
 
