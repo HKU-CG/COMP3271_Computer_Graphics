@@ -58,6 +58,14 @@ Color Shade(const Hittable &hittable_collection,
 Vec3 RandomHemisphere(const Vec &normal)
 ```
 
+#### bonus task
+- Implement a mirror reflection model in Shade function in the following method:
+```cpp
+Color Shade(const Hittable &hittable_collection,
+            const HitRecord &hit_record,
+            int trace_depth)
+```
+
 Refer to the tutorial slides for more details
 
 ### Requirements

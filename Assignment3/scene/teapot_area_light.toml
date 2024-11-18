@@ -46,7 +46,7 @@ specular = [0.6, 1.0, 1.0]
 k_a = 0.1
 k_d = 0.4
 k_s = 0.1
-sh = 64.0
+sh = 1.0
 
 [[hittable]]
 type = "triangle"
@@ -78,7 +78,7 @@ k_a = 0.0
 k_d = 0.1
 k_s = 0.0
 sh = 1.0
-emission = 4.0
+emission = 2.0
 
 [[hittable]]
 type = "triangle"
@@ -95,4 +95,4 @@ k_a = 0.0
 k_d = 0.1
 k_s = 0.0
 sh = 1.0
-emission = 4.0
+emission = 2.0
