@@ -12,8 +12,8 @@
 
 // TODO: feel free to modify the following parameters
 const int kMaxTraceDepth = 5;
-const int spp = 4192;
-const int NUM_THREAD = 16;
+const int spp = 16;
+const int NUM_THREAD = 4;
 const std::string scene_file = "scene/cornell_box.toml";
 const std::string output_path = "outputs/output.png";
 
