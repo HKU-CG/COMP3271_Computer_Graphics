@@ -1,0 +1,313 @@
+[camera]
+# Updated camera extrinsic matrix
+extrinsic = [
+    [1.0, 0.0, 0.0, 0.0],    # X-axis
+    [0.0, 1.0, 0.0, 0.0],    # Y-axis
+    [0.0, 0.0, 1.0, 0.5],    # Z-axis (camera position)
+    [0.0, 0.0, -1.5, 1.0]    # Looking toward the center of the Cornell Box
+]
+fov = 40.0
+width = 400
+height = 400
+super_sampling = 2
+
+[[hittable]]
+type = "triangle" # Floor
+a = [-1.0, -1.0, -1.0]
+b = [1.0, -1.0, -1.0]
+c = [-1.0, -1.0, -3.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Floor (second triangle)
+a = [1.0, -1.0, -3.0]
+b = [1.0, -1.0, -1.0]
+c = [-1.0, -1.0, -3.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Back Wall
+a = [-1.0, -1.0, -3.0]
+b = [1.0, -1.0, -3.0]
+c = [-1.0, 1.0, -3.0]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Back Wall (second triangle)
+a = [1.0, 1.0, -3.0]
+b = [1.0, -1.0, -3.0]
+c = [-1.0, 1.0, -3.0]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Left Wall
+a = [-1.0, -1.0, -1.0]
+b = [-1.0, -1.0, -3.0]
+c = [-1.0, 1.0, -1.0]
+n_a = [1.0, 0.0, 0.0]
+n_b = [1.0, 0.0, 0.0]
+n_c = [1.0, 0.0, 0.0]
+diffuse = [0.8, 0.2, 0.2]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Left Wall (second triangle)
+a = [-1.0, 1.0, -3.0]
+b = [-1.0, 1.0, -1.0]
+c = [-1.0, -1.0, -3.0]
+n_a = [1.0, 0.0, 0.0]
+n_b = [1.0, 0.0, 0.0]
+n_c = [1.0, 0.0, 0.0]
+diffuse = [0.8, 0.2, 0.2]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Right Wall
+a = [1.0, -1.0, -3.0]
+b = [1.0, -1.0, -1.0]
+c = [1.0, 1.0, -1.0]
+n_a = [-1.0, 0.0, 0.0]
+n_b = [-1.0, 0.0, 0.0]
+n_c = [-1.0, 0.0, 0.0]
+diffuse = [0.2, 0.8, 0.2]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Right Wall (second triangle)
+a = [1.0, 1.0, -3.0]
+b = [1.0, -1.0, -3.0]
+c = [1.0, 1.0, -1.0]
+n_a = [-1.0, 0.0, 0.0]
+n_b = [-1.0, 0.0, 0.0]
+n_c = [-1.0, 0.0, 0.0]
+diffuse = [0.2, 0.8, 0.2]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Ceiling
+a = [-1.0, 1.0, -1.0]
+b = [1.0, 1.0, -1.0]
+c = [-1.0, 1.0, -3.0]
+n_a = [0.0, -1.0, 0.0]
+n_b = [0.0, -1.0, 0.0]
+n_c = [0.0, -1.0, 0.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Ceiling (second triangle)
+a = [1.0, 1.0, -3.0]
+b = [1.0, 1.0, -1.0]
+c = [-1.0, 1.0, -3.0]
+n_a = [0.0, -1.0, 0.0]
+n_b = [0.0, -1.0, 0.0]
+n_c = [0.0, -1.0, 0.0]
+diffuse = [0.8, 0.8, 0.8]
+specular = [0.0, 0.0, 0.0]
+k_d = 1.0
+k_s = 0.0
+roughness = 1.0
+
+[[hittable]]
+type = "triangle" # Light source
+a = [-0.2, 0.99, -1.5]
+b = [0.2, 0.99, -1.5]
+c = [-0.2, 0.99, -2.0]
+n_a = [0.0, -1.0, 0.0]
+n_b = [0.0, -1.0, 0.0]
+n_c = [0.0, -1.0, 0.0]
+diffuse = [0.0, 0.0, 0.0]
+specular = [0.0, 0.0, 0.0]
+k_d = 0.0
+k_s = 0.0
+roughness = 1.0
+emission = 10.0
+
+[[hittable]]
+type = "triangle" # Light source (second triangle)
+a = [0.2, 0.99, -2.0]
+b = [0.2, 0.99, -1.5]
+c = [-0.2, 0.99, -2.0]
+n_a = [0.0, -1.0, 0.0]
+n_b = [0.0, -1.0, 0.0]
+n_c = [0.0, -1.0, 0.0]
+diffuse = [0.0, 0.0, 0.0]
+specular = [0.0, 0.0, 0.0]
+k_d = 0.0
+k_s = 0.0
+roughness = 1.0
+emission = 10.0
+
+
+# -------------------------------
+# SMALL BOX (LEFT SIDE)
+# -------------------------------
+
+[[hittable]]
+type = "triangle" # Small Box Front Face
+a = [-0.6, -1.0, -1.8]
+b = [-0.4, -1.0, -1.8]
+c = [-0.6, -0.5, -1.8]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.4, 0.4, 0.8]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.0
+k_s = 1.0
+roughness = 0.1
+
+[[hittable]]
+type = "triangle" # Small Box Front Face (second triangle)
+a = [-0.4, -0.5, -1.8]
+b = [-0.6, -0.5, -1.8]
+c = [-0.4, -1.0, -1.8]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.4, 0.4, 0.8]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.0
+k_s = 1.0
+roughness = 0.1
+
+[[hittable]]
+type = "triangle" # Small Box Top Face
+a = [-0.6, -0.5, -1.8]
+b = [-0.4, -0.5, -1.8]
+c = [-0.6, -0.5, -2.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.4, 0.4, 0.8]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.0
+k_s = 1.0
+roughness = 0.1
+
+[[hittable]]
+type = "triangle" # Small Box Top Face (second triangle)
+a = [-0.4, -0.5, -2.0]
+b = [-0.6, -0.5, -2.0]
+c = [-0.4, -0.5, -1.8]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.4, 0.4, 0.8]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.0
+k_s = 1.0
+roughness = 0.1
+
+# -------------------------------
+# LARGE BOX (RIGHT SIDE)
+# -------------------------------
+
+[[hittable]]
+type = "triangle" # Large Box Front Face
+a = [0.3, -1.0, -2.0]
+b = [0.7, -1.0, -2.0]
+c = [0.3, -0.3, -2.0]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.8, 0.8, 0.4]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.8
+k_s = 0.2
+roughness = 0.5
+
+[[hittable]]
+type = "triangle" # Large Box Front Face (second triangle)
+a = [0.7, -0.3, -2.0]
+b = [0.3, -0.3, -2.0]
+c = [0.7, -1.0, -2.0]
+n_a = [0.0, 0.0, 1.0]
+n_b = [0.0, 0.0, 1.0]
+n_c = [0.0, 0.0, 1.0]
+diffuse = [0.8, 0.8, 0.4]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.8
+k_s = 0.2
+roughness = 0.5
+
+[[hittable]]
+type = "triangle" # Large Box Top Face
+a = [0.3, -0.3, -2.0]
+b = [0.7, -0.3, -2.0]
+c = [0.3, -0.3, -2.4]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.8, 0.8, 0.4]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.8
+k_s = 0.2
+roughness = 0.5
+
+[[hittable]]
+type = "triangle" # Large Box Top Face (second triangle)
+a = [0.7, -0.3, -2.4]
+b = [0.3, -0.3, -2.4]
+c = [0.7, -0.3, -2.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+diffuse = [0.8, 0.8, 0.4]
+specular = [0.8, 0.8, 0.8]
+k_d = 0.8
+k_s = 0.2
+roughness = 0.5
+
+[[hittable]]
+type = "sphere"
+position = [0.0, -1.0, -2.0]  # Center of the sphere (above the small box)
+radius = 0.2                 # Radius of the sphere
+diffuse = [0.8, 0.4, 0.4]    # Redish color for diffuse lighting
+specular = [1.0, 1.0, 1.0]   # Strong specular highlight
+k_d = 0.1                    # Diffuse reflection coefficient
+k_s = 0.9                    # Specular reflection coefficient
+roughness = 0.3                    # Shininess for specular reflection
