@@ -301,13 +301,3 @@ specular = [0.8, 0.8, 0.8]
 k_d = 0.8
 k_s = 0.2
 roughness = 0.5
-
-[[hittable]]
-type = "sphere"
-position = [0.0, -1.0, -2.0]  # Center of the sphere (above the small box)
-radius = 0.2                 # Radius of the sphere
-diffuse = [0.8, 0.4, 0.4]    # Redish color for diffuse lighting
-specular = [1.0, 1.0, 1.0]   # Strong specular highlight
-k_d = 0.1                    # Diffuse reflection coefficient
-k_s = 0.9                    # Specular reflection coefficient
-roughness = 0.3                    # Shininess for specular reflection
