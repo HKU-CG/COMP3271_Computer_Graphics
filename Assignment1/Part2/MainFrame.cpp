@@ -115,7 +115,7 @@ void MainFrame::LeftMouseMove(float start_x, float start_y, float curr_x, float 
         mesh_.ApplyFaceTransform(face_index, transform_mat);
     } else if (modeling_state_ == OBJ_SCALE) {
         // ---------------------------------- Object Local Scaling ------------------------------------
-        // TODO 5: Add your code here.
+        // TODO 4: Add your code here.
         // Hint: Map the vertical drag distance to a scale factor (optional:expo helps keep it smooth) and apply it
         //       around the mesh center with translate-scale-translate^-1.
         glm::mat4x4 transform_mat(1.f);
