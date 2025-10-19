@@ -11,7 +11,7 @@ uniform vec3 objectColor;
 uniform sampler2D diffuseMap;
 uniform int uTransparent; // 0 = Phong, 1 = glass-like transparent
 
-// Compute scalar Phong terms (ambient, diffuse, specular) and NoV; computes L/V internally
+// Compute scalar Phong terms (ambient, diffuse, specular)
 void computePhongScalar(
     vec3 N,
     float ambientStrength,
@@ -22,8 +22,7 @@ void computePhongScalar(
     float ambientLightStrength,
     out float ambient,
     out float diffuse,
-    out float specular,
-    out float NoV
+    out float specular
 ) {
     // TODO 2: Implement Blinn-Phong/Phong lighting model
     // Some useful functions:
@@ -57,11 +56,11 @@ void main() {
     const float F0 = 0.02; 
     const float alphaBase = 0.25;
 
-    float ambient, diffuse, specular, NoV;
+    float ambient, diffuse, specular;
     computePhongScalar(N,
         ambientStrength, diffuseStrength, specularStrength,
         shininess, lightStrength, ambientLightStrength,
-        ambient, diffuse, specular, NoV);
+        ambient, diffuse, specular);
 
     vec3 color = (ambient + diffuse + specular) * albedo;
 
