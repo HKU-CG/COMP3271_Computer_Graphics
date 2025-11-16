@@ -1,0 +1,98 @@
+[camera]
+
+extrinsic = [
+[1.0, 0.0, 0.0, 0.0],
+[0.0, 0.861934, 0.50702, 0.0],
+[0.0, -0.50702, 0.861934, 0.0],
+[0.0, -1.01404, -0.24844, 1.0]
+]
+
+fov = 90.0
+width = 800
+height = 800
+super_sampling = 0
+
+[[hittable]]
+type = "sphere"
+position = [-0.2, 0.1, -1.0]
+radius = 0.1
+ambient = [1.0, 0.341, 0.2]
+diffuse = [1.0, 0.341, 0.2]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.8
+k_s = 0.1
+sh = 1.0
+
+[[hittable]]
+type = "sphere"
+position = [-0.3, 0.1, -1.5]
+radius = 0.1
+ambient = [1.0, 0.341, 0.2]
+diffuse = [1.0, 0.341, 0.2]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.8
+k_s = 0.1
+sh = 1.0
+
+[[hittable]]
+type = "mesh"
+file_path = "mesh/teapot.ply"
+phong_interpolation = true
+ambient = [0.6, 1.0, 1.0]
+diffuse = [0.6, 1.0, 1.0]
+specular = [0.6, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.4
+k_s = 0.1
+sh = 1.0
+
+[[hittable]]
+type = "triangle"
+a = [-1000.0, -0.1, -1000.0]
+b = [0.0, -0.1, 1000.0]
+c = [1000.0, -0.1, -1000.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.1
+k_d = 0.8
+k_s = 0.1
+sh = 1.0
+[[hittable]]
+type = "triangle"
+a = [-1.0, 3.0, 1.0]
+b = [1.0, 3.0, -3.0]
+c = [1.0, 3.0, -1.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.0
+k_d = 0.1
+k_s = 0.0
+sh = 1.0
+emission = 4.0
+
+[[hittable]]
+type = "triangle"
+a = [-1.0, 3.0, 1.0]
+b = [-1.0, 3.0, -3.0]
+c = [1.0, 3.0, -3.0]
+n_a = [0.0, 1.0, 0.0]
+n_b = [0.0, 1.0, 0.0]
+n_c = [0.0, 1.0, 0.0]
+ambient = [1.0, 1.0, 1.0]
+diffuse = [1.0, 1.0, 1.0]
+specular = [1.0, 1.0, 1.0]
+k_a = 0.0
+k_d = 0.1
+k_s = 0.0
+sh = 1.0
+emission = 4.0
