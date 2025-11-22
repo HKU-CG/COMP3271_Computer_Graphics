@@ -41,7 +41,7 @@ void tracePixel(int x, int y, int width, int height, int thread_spp, const Camer
 void thread_func(int thread_i, int n_thread, int spp, int width, int height, const Camera &camera, const Scene &scene,
                  float *image_buffer) {
     auto now = std::chrono::high_resolution_clock::now();
-    int thread_spp = spp / n_thread;
+    int thread_spp = spp;
     float progress = 0.f;
 
     for (int x = thread_i; x < width; x += n_thread) {
