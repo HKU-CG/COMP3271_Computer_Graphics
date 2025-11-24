@@ -1,6 +1,6 @@
 # Programming Assignment 3
 
-## Due date: 23:59, Dec. 1, 2025 HKT
+## Due date: 23:59, Dec. 4, 2025 HKT
 
 ### Goal
 
