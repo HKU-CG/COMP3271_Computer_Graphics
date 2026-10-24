@@ -21,15 +21,18 @@ If you encounter any problems during the setup, please read the [xmake FAQ](Envi
 All assignments share the same codebase and build system:
 
 - Assignment 1: [Interactive Triangle Drawing and 3D Scene Editor](Assignment1/README.md)
-- Assignment 2: TBA
+- Assignment 2: [Shader Lab](Assignment2/README.md)
 - Assignment 3: TBA
 
-Each assignment has its own folder containing a `README.md` with the handout and an `xmake.lua` with its build target. To compile and run an assignment, enter the `COMP3271` directory and run:
+Each assignment has its own folder containing a `README.md` with the handout and
+an `xmake.lua` with its build target. To compile and run an assignment, enter
+the `code/` directory and run:
 
 ```shell
 xmake run <target_name>
 ```
 
-Replace `<target_name>` with the target of the assignment (e.g., `assignment1` for Assignment 1), and follow the instructions in the corresponding `README.md`.
+Replace `<target_name>` with the target of the assignment (for example,
+`assignment1_part_a` or `assignment2`), and follow its `README.md`.
 
 Any commit and issue will be welcome. Don't hesitate to seek help via email.

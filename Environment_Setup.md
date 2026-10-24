@@ -2,10 +2,10 @@
 
 ## 1 - Prepare Git
 
-Our codebase is hosted in a course Git repository. First, follow the instructions on the [official Git website](https://git-scm.com/) to install Git. After installing Git, use it to clone the repository into a directory of your choice. This will create a directory named `COMP3271_Computer_Graphics`, which will be your directory for all Assignments this semester.
+Our codebase is hosted in a course Git repository. First, follow the instructions on the [official Git website](https://git-scm.com/) to install Git. After installing Git, use it to clone the repository into a directory of your choice. This will create a directory named `COMP3271`, which will be your directory for all Assignments this semester.
 
 ```shell
-git clone https://github.com/HKU-CG/COMP3271_Computer_Graphics.git
+git clone https://github.com/litzzzhang/COMP3271.git
 ```
 
 ## 2 - Prepare a Compiler
@@ -71,7 +71,7 @@ curl -fsSL https://xmake.io/shget.text | bash
 
 After installation, run `xmake --version` in a terminal to verify that xmake was installed correctly.
 
-Next, enter the `COMP3271_Computer_Graphics` directory in a terminal (and use this directory for the commands below), then run `xmake`. xmake will automatically detect your platform, download all dependencies (glfw, glad, glm, etc., no manual library installation is needed), and compile and link the project. Note that you may encounter network problems; see the network-related section of the FAQ below.
+Next, enter the `COMP3271` directory in a terminal (and use this directory for the commands below), then run `xmake`. xmake will automatically detect your platform, download all dependencies (glfw, glad, glm, etc., no manual library installation is needed), and compile and link the project. Note that you may encounter network problems; see the network-related section of the FAQ below.
 
 Then run `xmake run test`. If everything goes smoothly, you will see an interface  displaying a colorful triangle.
 
@@ -87,11 +87,11 @@ Next, you may want your favorite IDE to recognize the xmake project so that it c
 
  - Visual Studio:
     Run `xmake project -a x64 -k vsxmake ./build`.
-    You will find the `.sln` solution file in the `COMP3271_Computer_Graphics/build/vsxmake20xx` directory.
+    You will find the `.sln` solution file in the `COMP3271/build/vsxmake20xx` directory.
 
  - Xcode:
     Run `xmake project -k xcode ./build`.
-    You will find the Xcode project file in the `COMP3271_Computer_Graphics/build/xcode` directory.
+    You will find the Xcode project file in the `COMP3271/build/xcode` directory.
 
  - VS Code (graphical configuration):
     
@@ -105,7 +105,7 @@ Next, you may want your favorite IDE to recognize the xmake project so that it c
     
  - VS Code (command-line configuration):
     First, run `xmake project -k compile_commands ./.vscode`.
-    Then create a file named `c_cpp_properties.json` in the `COMP3271_Computer_Graphics/.vscode` directory and add:
+    Then create a file named `c_cpp_properties.json` in the `COMP3271/.vscode` directory and add:
     
     ```json
     { "configurations": [ { "name": "Default", "compileCommands": "${workspaceFolder}/.vscode/compile_commands.json" } ], "version": 4 }
@@ -125,7 +125,7 @@ Next, you may want your favorite IDE to recognize the xmake project so that it c
 - A. Make sure that you installed xmake through PowerShell. If you installed xmake using a downloaded `.exe` installer, configure the environment variables manually according to the instructions on the official website.
 
 - Q. Running `xmake` in the command line displays `note: xmake.lua not found, try generating it`. What should I do?
-- A. Make sure that the current directory in the command line is `COMP3271_Computer_Graphics`. If it is not, use `cd` to switch to the correct path.
+- A. Make sure that the current directory in the command line is `COMP3271`. If it is not, use `cd` to switch to the correct path.
 
 - Q. Running `xmake` in the command line reports that the compiler cannot be found, or displays `cannot get program for cxx`. What should I do?
 - A. On each platform, xmake uses that platform's native toolchain by default: Visual Studio on Windows, Xcode on macOS, and GCC on Linux. It will report that the compiler cannot be found if you try to use a different toolchain without configuring it. To use the GCC compiler provided by MSYS2, run the following on Windows:
@@ -158,4 +158,4 @@ Next, you may want your favorite IDE to recognize the xmake project so that it c
 
 ## Still have problems?
 
-Don't hesitate to seek TA (litzzzhang@connect.hku.hk) for help :)
+Don't hesitate to seek TA (litzzzhang@connect.hku.hk) for help :)!

@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 // clang-format off
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -235,16 +236,22 @@ class Shader {
         const std::string vsrc = read_shader_file(vertex_path);
         const std::string fsrc = read_shader_file(fragment_path);
 
-        unsigned int vertex_shader, fragment_shader;
-        vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-        fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-        compile_shader(vertex_shader, vsrc);
-        compile_shader(fragment_shader, fsrc);
+        const unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+        const unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+        try {
+            compile_shader(vertex_shader, vsrc);
+            compile_shader(fragment_shader, fsrc);
 
-        id_ = glCreateProgram();
-        glAttachShader(id_, vertex_shader);
-        glAttachShader(id_, fragment_shader);
-        link_program(id_);
+            id_ = glCreateProgram();
+            glAttachShader(id_, vertex_shader);
+            glAttachShader(id_, fragment_shader);
+            link_program(id_);
+        } catch (...) {
+            glDeleteShader(vertex_shader);
+            glDeleteShader(fragment_shader);
+            release();
+            throw;
+        }
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
     }
@@ -339,7 +346,7 @@ class Shader {
             log.resize(log_length);
             glGetProgramInfoLog(program, log_length, &log_length, log.data());
             spdlog::error("OpenGL ERROR linking program:\n{}", log);
-            std::terminate();
+            throw std::runtime_error("OpenGL program link failed: " + log);
         }
     }
 
@@ -407,7 +414,7 @@ class Shader {
             if (!lastErr.empty()) { oss << "\033[33m" << lastErr << "\033[0m"; }
             spdlog::error("OpenGL ERROR compiling shader:\n{}", oss.str());
             if (lines.empty()) { spdlog::error("Log messages:\n{}", log); }
-            std::terminate();
+            throw std::runtime_error("OpenGL shader compilation failed: " + log);
         }
     }
 

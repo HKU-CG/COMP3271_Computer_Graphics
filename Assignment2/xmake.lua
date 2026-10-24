@@ -1,0 +1,7 @@
+target("assignment2")
+set_kind("binary")
+add_deps("engine")
+add_files("$(projectdir)/Assignment2/*.cpp")
+add_headerfiles("$(projectdir)/Assignment2/*.hpp")
+set_rundir("$(projectdir)")
+target_end()

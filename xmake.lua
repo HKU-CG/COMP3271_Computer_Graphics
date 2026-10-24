@@ -34,3 +34,4 @@ add_files("$(projectdir)/test/opengl_demo.cpp")
 target_end()
 
 includes("Assignment1/xmake.lua")
+includes("Assignment2/xmake.lua")
