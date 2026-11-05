@@ -1,6 +1,6 @@
 # Programming Assignment 2 — Shader Lab
 
-## Due date: 9 November 2026, 23:59
+## Due date: 16 November 2026, 23:59
 
 ## Goal and marks
 
