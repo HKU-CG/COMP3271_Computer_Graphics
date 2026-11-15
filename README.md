@@ -22,7 +22,7 @@ All assignments share the same codebase and build system:
 
 - Assignment 1: [Interactive Triangle Drawing and 3D Scene Editor](Assignment1/README.md)
 - Assignment 2: [Shader Lab](Assignment2/README.md)
-- Assignment 3: TBA
+- Assignment 3: [Path Tracing and BVH](Assignment3/README.md)
 
 Each assignment has its own folder containing a `README.md` with the handout and
 an `xmake.lua` with its build target. To compile and run an assignment, enter
