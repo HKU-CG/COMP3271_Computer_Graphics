@@ -14,8 +14,8 @@ Perfect mirror reflection is an optional **5-mark bonus**.
 | --- | --- | ---: |
 | 1. Ray intersections | Sphere and triangle intersection | 20 |
 | 2. Monte Carlo sampling | Cosine-weighted hemisphere sampling | 15 |
-| 3. Diffuse path tracing | Emission, indirect illumination, and path termination | 30 |
-| 4. BVH acceleration | AABB intersection, BVH construction, and closest-hit traversal | 30 |
+| 3. Diffuse path tracing | Emission, indirect illumination, and path termination | 50 |
+| 4. BVH acceleration | AABB intersection | 10 |
 | 5. Verification | Rendered results and a short correctness/performance summary | 5 |
 | Bonus. Perfect mirror | Ideal specular reflection | +5 |
 
@@ -60,7 +60,7 @@ supports PPM. The writer creates the output directory when necessary; reusing an
 output path overwrites the previous image. Console messages go to stderr.
 
 **The default is `--accel brute`: no acceleration structure.** The supplied linear
-intersection loop lets you develop Parts 1–3 before implementing the BVH. The
+intersection loop lets you develop Parts 1–3 before implementing AABB intersection. The
 starter compiles and writes an image, but the unimplemented student tasks produce
 a black image initially. Implement primitive intersections for geometry previews,
 then sampling and path tracing for a lit image. Enable `--accel bvh` after Part 4
@@ -95,7 +95,7 @@ xmake run assignment3 --help
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `--scene NAME` | `cornell` | `cornell`, `cornell_stress`, or `cornell_mirror` |
-| `--accel MODE` | `brute` | `brute`: no acceleration; `bvh`: your BVH implementation |
+| `--accel MODE` | `brute` | `brute`: no acceleration; `bvh`: supplied BVH using your AABB intersection |
 | `--width N`, `--height N` | `256` each | Image dimensions, each in `1..16384` |
 | `--spp N` | `128` | Camera samples per pixel, in `1..1000000`; more samples reduce noise |
 | `--depth N` | `8` | Maximum scattering events, in `0..1024` |
@@ -250,7 +250,7 @@ RNG so a fixed seed can reproduce a run.
 product with the normal. Over many samples, the average of `dot(normal, omega)`
 approaches `2/3`; the average tangential components approach zero.
 
-## Part 3 — Diffuse path tracing (30 marks)
+## Part 3 — Diffuse path tracing (50 marks)
 
 Implement `TracePath` in `PathTracer.cpp`, using either recursion or iteration.
 For each camera sample, trace the ray through the scene, collect emitted radiance,
@@ -289,12 +289,13 @@ adds illumination in indirectly lit regions and red/green bleeding on white
 surfaces. Increasing samples per pixel reduces noise without systematically
 changing brightness. An 8-spp preview may contain many dark pixels.
 
-## Part 4 — BVH acceleration (30 marks)
+## Part 4 — BVH acceleration (10 marks)
 
-Implement `AABB::Hit`, `BVH::BuildRange`, and `BVH::HitNode` in `BVH.cpp`. The
-public `BVH::Build` / `BVH::Hit` entry points, bounds helpers, node storage,
-primitive IDs, and the brute-force baseline are supplied. The BVH must
-accelerate all scene queries, including secondary path rays.
+Implement only `AABB::Hit` in `BVH.cpp`. BVH construction (`BVH::Build` and
+`BVH::BuildRange`) and closest-hit traversal (`BVH::Hit` and `BVH::HitNode`)
+are supplied, along with bounds helpers, node storage, primitive IDs, and the
+brute-force baseline. The supplied BVH uses your AABB intersection to accelerate
+all scene queries, including secondary path rays.
 
 ### Ray–AABB intersection (10 marks)
 
@@ -302,43 +303,18 @@ Use the slab method and intersect each axis interval with `[t_min,t_max]`.
 Account for negative direction components. When a component is zero, reject only
 if the origin is outside that axis's slab; otherwise that axis imposes no new
 restriction. Avoid division by zero and NaNs. Keep a touching interval as a hit
-(`t_exit >= t_enter`), including flat boxes from triangle bounds.
+(`t_exit >= t_enter`), including flat boxes from triangle bounds. Empty bounds
+and reversed input intervals (`t_min > t_max`) must return false.
 
-### BVH construction (10 marks)
+**Check:** the supplied checker tests AABB edge cases and compares brute-force
+and BVH hit/miss results, distances, normals, and materials on fixed rays. With
+the same per-pixel seeds, both render modes should agree within floating-point
+tolerance.
 
-Build a binary tree once before rendering:
-
-1. Compute the union of primitive bounds for the current node.
-2. For up to four primitives, create a leaf.
-3. Otherwise, choose the longest axis of the primitive centroid bounds, partition
-   primitives at the median, and recursively build two children.
-
-Ties between axes may be resolved consistently in any order. Equal centroids must
-still produce two nonempty ranges, for example by splitting an ordered index
-range at its middle. Support an empty scene and a single-primitive scene. Every
-primitive must occur in exactly one leaf, and each node must enclose its subtree.
-Do not duplicate an odd final primitive or rebuild the tree for each ray.
-
-### Closest-hit traversal (10 marks)
-
-Reject subtrees whose bounds miss the ray. At leaves, call the same primitive
-intersection routines used by brute force. After finding a hit, shorten `t_max`
-for subsequent tests, and return the closest valid hit. Either child order is
-acceptable; near-first traversal is optional. For exactly equal hit distances,
-use the smaller stable primitive ID in both modes, through the supplied comparison
-helper. This makes shared triangle boundaries deterministic.
-
-**Check:** the supplied checker compares brute-force and BVH hit/miss results,
-distances, normals, and materials on fixed rays. With the same per-pixel seeds,
-both render modes should agree within floating-point tolerance. BVH traversal
-must not consume random numbers or change the estimator.
-
-The default Cornell box is deliberately small; timing it alone is not a useful
-BVH assessment. The supplied `cornell_stress` scene keeps the room and light but
-replaces the interior objects with a deterministic grid of **4,096 small spheres**.
-Use the supplied benchmark on **10,000 fixed primary rays** to compare primitive
-test counts and intersection time. AABB tests and primitive tests are counted
-separately. Tree construction time is reported separately from query time.
+The default Cornell box is deliberately small; use `cornell_stress` for the
+performance comparison. It keeps the room and light but replaces the interior
+objects with a deterministic grid of **4,096 small spheres**. The benchmark below
+uses **10,000 fixed primary rays** and counts AABB and primitive tests separately.
 
 ```shell
 xmake run assignment3 --check
@@ -372,8 +348,8 @@ independent of the bonus.
 | Week | Milestone | Estimated active work |
 | --- | --- | --- |
 | 1 | Primitive intersections; inspect normal/depth previews | 6–8 hours |
-| 2 | Cosine sampler and diffuse path tracer; render with brute force | 7–9 hours |
-| 3 | AABB, BVH build, traversal; compare against brute force | 7–9 hours |
+| 2 | Cosine sampler and diffuse path tracer; render with brute force | 10–13 hours |
+| 3 | AABB intersection; verify the supplied BVH against brute force | 4–5 hours |
 | 4 | Correctness checks, benchmark, final PPMs, and short summary | 4–6 hours |
 
 These are suggested milestones, not separate submission deadlines. Start with
@@ -386,7 +362,7 @@ Keep the provided interfaces and scene constants. Implement the assessed
 algorithms yourself; do not call a rendering engine, ray-intersection library,
 or third-party BVH builder. Standard C++ containers, algorithms, and the supplied
 vector helpers are allowed. Add concise comments explaining the sampling weight,
-termination convention, and BVH partition/traversal decisions.
+termination convention, and BVH building process.
 
 Submit one archive named `Assignment3_<student_id>.zip` to Moodle before
 **14 December 2026, 23:59 HKT (UTC+8)**, containing:
@@ -396,7 +372,7 @@ Submit one archive named `Assignment3_<student_id>.zip` to Moodle before
 - `outputs/cornell_16.ppm` and `outputs/cornell_128.ppm`, both at **256 × 256**,
   with **16 and 128 spp** respectively, **depth 8**, **seed 3271**, and BVH enabled;
 - `summary.md`, at most **500 words** excluding tables: explain the cosine-sampling
-  weight and BVH split rule, compare the two noise levels, state checker results,
+  weight and BVH building process, compare the two noise levels, state checker results,
   and give the benchmark table below;
 - if attempting the bonus, `outputs/mirror.ppm` at 256 × 256, 128 spp, depth 8,
   seed 3271, plus a brief bonus description within the same summary.
